@@ -1,3 +1,8 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Menú RIOMAR</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Manrope:wght@500;600;700;800&display=swap');
@@ -154,101 +159,118 @@
     line-height:1.4;
   }
 
-  /* ---------- chips de categoría ---------- */
-  .cat-nav-row{
+  /* ---------- grilla de categorías (estilo PedidosYa) ---------- */
+  .cat-grid-wrap{
     position:sticky;
     top:var(--search-wrap-h, 92px);
     z-index:5;
-    display:flex;
-    align-items:center;
     background:var(--bg);
+    padding:4px 20px 10px;
+    max-height:calc(100vh - var(--search-wrap-h, 92px));
+    overflow-y:auto;
   }
-  .cat-nav{
-    flex:1;
-    min-width:0;
+  .cat-grid{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:10px;
+  }
+  .cat-card-btn{
     display:flex;
-    gap:8px;
-    overflow-x:auto;
-    padding:2px 20px 14px;
-    scrollbar-width:none;
-    scroll-behavior:smooth;
-  }
-  .cat-nav::-webkit-scrollbar{ display:none; }
-  @media (hover:hover) and (pointer:fine){
-    .cat-nav{ cursor:grab; }
-    .cat-nav:active{ cursor:grabbing; }
-  }
-  .cat-nav-arrow{
-    display:none;
-    flex:none;
+    flex-direction:column;
     align-items:center;
     justify-content:center;
-    width:30px;
-    height:30px;
-    margin-bottom:12px;
-    border-radius:999px;
-    border:1px solid var(--line);
+    gap:6px;
     background:var(--surface);
-    color:var(--ink);
-    font-size:1.1rem;
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:14px 6px 10px;
+    box-shadow:var(--shadow);
+    cursor:pointer;
+    text-align:center;
+  }
+  .cat-card-icon{
+    font-size:1.7rem;
     line-height:1;
-    cursor:pointer;
-    box-shadow:0 1px 4px rgba(0,0,0,.12);
   }
-  .cat-nav-arrow:first-child{ margin-left:10px; }
-  .cat-nav-arrow:last-child{ margin-right:10px; }
-  @media (hover:hover) and (pointer:fine){
-    .cat-nav-arrow{ display:inline-flex; }
-  }
-  .cat-nav-arrow[hidden]{ display:none; }
-  .cat-nav button{
-    flex:none;
-    font-family:'Bebas Neue', 'Manrope', sans-serif;
-    letter-spacing:.03em;
-    font-size:.92rem;
+  .cat-card-name{
+    font-size:.74rem;
+    font-weight:700;
     color:var(--ink);
-    background:var(--surface);
-    border:1px solid var(--line);
-    padding:8px 15px 6px;
-    border-radius:999px;
+    line-height:1.25;
+  }
+  .cat-grid-toggle{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:5px;
+    width:100%;
+    margin-top:12px;
+    background:transparent;
+    border:0;
+    color:var(--blue);
+    font-family:'Manrope', sans-serif;
+    font-weight:700;
+    font-size:.86rem;
+    padding:6px;
     cursor:pointer;
-    white-space:nowrap;
-    transition:background .15s ease, color .15s ease, border-color .15s ease;
   }
-  .cat-nav button.active{
-    background:var(--accent);
-    border-color:var(--accent);
-    color:var(--accent-ink);
+  .cat-grid-toggle .chev{
+    display:inline-block;
+    font-size:.8rem;
+    transition:transform .2s ease;
   }
+  .cat-grid-toggle.open .chev{ transform:rotate(180deg); }
 
   /* ---------- secciones / tarjetas ---------- */
-  .categories{ padding:6px 20px 8px; display:flex; flex-direction:column; gap:20px; }
-  .category{ scroll-margin-top:var(--sticky-total-h, 158px); }
+  .categories{ padding:10px 20px 8px; display:flex; flex-direction:column; gap:14px; }
+  .category{ scroll-margin-top:var(--sticky-total-h, 200px); }
   .cat-head{
+    all:unset;
+    box-sizing:border-box;
     display:flex;
-    align-items:baseline;
+    align-items:center;
     justify-content:space-between;
-    margin:0 3px 10px;
+    gap:10px;
+    width:100%;
+    padding:14px 16px;
+    margin:0;
+    cursor:pointer;
+    background:var(--surface);
+    border-radius:16px;
+    box-shadow:var(--shadow);
+    border-top:3px solid var(--blue);
   }
+  .category.open .cat-head{
+    border-radius:16px 16px 0 0;
+  }
+  .cat-head-text{ display:flex; align-items:baseline; gap:8px; min-width:0; }
   .cat-title{
     font-family:'Bebas Neue', sans-serif;
     letter-spacing:.03em;
     font-weight:400;
-    font-size:1.3rem;
+    font-size:1.2rem;
     color:var(--ink);
     margin:0;
+    white-space:nowrap;
   }
   .cat-count{
     font-size:.74rem;
     color:var(--ink-faint);
     font-variant-numeric:tabular-nums;
+    white-space:nowrap;
   }
+  .cat-chevron{
+    flex:none;
+    font-size:.9rem;
+    color:var(--ink-faint);
+    transition:transform .2s ease;
+  }
+  .category.open .cat-chevron{ transform:rotate(180deg); }
   .cat-card{
     background:var(--surface);
-    border-radius:16px;
+    border-radius:0 0 16px 16px;
     box-shadow:var(--shadow);
     overflow:hidden;
-    border-top:3px solid var(--blue);
   }
   ul.items{ list-style:none; margin:0; padding:0; }
   .item{
@@ -441,7 +463,7 @@
     font-family:'Bebas Neue', 'Manrope', sans-serif;
     letter-spacing:.03em;
     font-size:1.3rem;
-    color:var(--navy);
+    color:var(--ink);
   }
   .cart-close{
     border:0;
@@ -495,7 +517,7 @@
     font-family:'Manrope', sans-serif;
     font-weight:800;
     font-size:1.02rem;
-    color:var(--navy);
+    color:var(--ink);
   }
   .cart-note{
     margin:0 0 10px;
@@ -520,6 +542,8 @@
     opacity:.5;
   }
 </style>
+</head>
+<body>
 
 <div class="app">
   <div class="example-banner" id="exampleBanner" hidden>Datos de ejemplo — reemplazalos por tus productos</div>
@@ -539,10 +563,12 @@
     <p class="search-hint">Para realizar el pedido, carga la cantidad en kg de cada producto - por ejemplo 0,3 = 300g - y tocá "agregar"</p>
   </div>
 
-  <div class="cat-nav-row" id="catNavRow">
-    <button type="button" class="cat-nav-arrow" id="catNavLeft" aria-label="Ver categorías anteriores" hidden>‹</button>
-    <nav class="cat-nav" id="catNav"></nav>
-    <button type="button" class="cat-nav-arrow" id="catNavRight" aria-label="Ver más categorías" hidden>›</button>
+  <div class="cat-grid-wrap" id="catGridWrap">
+    <div class="cat-grid" id="catGrid"></div>
+    <button type="button" class="cat-grid-toggle" id="catGridToggle" hidden>
+      <span class="label">Más categorías</span>
+      <span class="chev">⌄</span>
+    </button>
   </div>
 
   <div class="categories" id="categories"></div>
@@ -3687,20 +3713,19 @@ function norm(s){
   return s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"");
 }
 
-/* ---------------- alto real de las barras fijas ----------------
+/* ---------------- alto real de la barra fija ----------------
    El buscador (con la aclaración de cantidades) puede ocupar distinta
    altura según el ancho de pantalla y la fuente cargada. Medimos su
-   alto real para que la fila de categorías se pegue justo debajo, sin
-   tapar ni dejar un hueco, y para que el scroll a cada categoría
-   respete ese mismo espacio. */
+   alto real para que, al tocar una categoría, el scroll respete ese
+   espacio y no quede tapada por el buscador. */
 function syncStickyOffsets(){
   const searchWrap = document.querySelector(".search-wrap");
-  const navRow = document.getElementById("catNavRow");
-  if(!searchWrap || !navRow) return;
+  const gridWrap = document.getElementById("catGridWrap");
+  if(!searchWrap) return;
   const searchH = searchWrap.offsetHeight;
-  const navH = navRow.offsetHeight;
   document.documentElement.style.setProperty("--search-wrap-h", searchH + "px");
-  document.documentElement.style.setProperty("--sticky-total-h", (searchH + navH) + "px");
+  const gridH = (gridWrap && !gridWrap.hidden) ? gridWrap.offsetHeight : 0;
+  document.documentElement.style.setProperty("--sticky-total-h", (searchH + gridH) + "px");
 }
 window.addEventListener("resize", syncStickyOffsets);
 window.addEventListener("load", syncStickyOffsets);
@@ -3715,20 +3740,36 @@ document.getElementById("footUpdated").textContent = "Actualizado el " + BUSINES
 document.getElementById("footNote").textContent = BUSINESS.nota;
 
 /* ---------------- refs ---------------- */
-const nav = document.getElementById("catNav");
-const navRow = document.getElementById("catNavRow");
-const navLeftBtn = document.getElementById("catNavLeft");
-const navRightBtn = document.getElementById("catNavRight");
+const catGrid = document.getElementById("catGrid");
+const catGridToggle = document.getElementById("catGridToggle");
 const catsEl = document.getElementById("categories");
 const noResults = document.getElementById("noResults");
 const searchInput = document.getElementById("searchInput");
 const banner = document.getElementById("exampleBanner");
 
-const chipByCat = {};
+const CAT_GRID_VISIBLE = 6; // cuántas categorías se ven antes de "Más categorías"
+const CAT_ICONS = {
+  "pescados": "🐟",
+  "mariscos": "🦐",
+  "rebozados": "🍗",
+  "sushi y cocina asiatica": "🍣",
+  "conservas y encurtidos": "🥫",
+  "salsas y aderezos": "🥣",
+  "especias y condimentos": "🧂",
+  "aceites y vinagres": "🧴",
+  "arroces, legumbres y fideos": "🍚",
+  "vinos y bebidas": "🍷",
+  "carnes": "🥩",
+  "utensilios y accesorios": "🍽️",
+  "suplementos": "💊"
+};
+function catIcon(nombre){
+  return CAT_ICONS[norm(nombre)] || "🛒";
+}
+
 const sectionByCat = {};
 const itemRefs = {};
 const cart = {}; // key -> { qty, nombre, precioTexto, precioNum, categoria }
-let observer = null;
 
 /* ---------------- carrito ---------------- */
 const cartOverlay = document.getElementById("cartOverlay");
@@ -3920,69 +3961,77 @@ document.getElementById("contactBtn").addEventListener("click", ()=>{
   }
 });
 
-/* ---------------- navegación de categorías en desktop ----------------
-   En el celular alcanza con arrastrar el dedo. En una compu con mouse
-   agregamos flechas, rueda del mouse (vertical la traducimos a
-   horizontal) y arrastre con click para poder recorrer todas las
-   categorías igual. */
-function updateNavArrows(){
-  const maxScroll = nav.scrollWidth - nav.clientWidth;
-  navLeftBtn.hidden = nav.scrollLeft <= 2;
-  navRightBtn.hidden = nav.scrollLeft >= maxScroll - 2;
-}
-navLeftBtn.addEventListener("click", ()=>{
-  nav.scrollBy({ left: -Math.max(160, nav.clientWidth * 0.6), behavior: "smooth" });
-});
-navRightBtn.addEventListener("click", ()=>{
-  nav.scrollBy({ left: Math.max(160, nav.clientWidth * 0.6), behavior: "smooth" });
-});
-nav.addEventListener("scroll", updateNavArrows, { passive:true });
-window.addEventListener("resize", updateNavArrows);
+/* ---------------- grilla de categorías ---------------- */
+function buildCatGrid(categories){
+  catGrid.innerHTML = "";
+  let catGridExpanded = false;
 
-nav.addEventListener("wheel", (e)=>{
-  if(Math.abs(e.deltaY) <= Math.abs(e.deltaX)) return;
-  const maxScroll = nav.scrollWidth - nav.clientWidth;
-  if(maxScroll <= 0) return;
-  nav.scrollLeft += e.deltaY;
-  e.preventDefault();
-}, { passive:false });
-
-(function enableDragScroll(){
-  // Importante: NO capturamos el puntero en pointerdown (eso rompe el
-  // evento "click" de los chips en Chrome/Edge incluso sin arrastre).
-  // Recién activamos el arrastre y el pointer capture cuando el mouse
-  // se movió lo suficiente como para considerarlo un drag real.
-  let tracking = false, dragging = false, moved = false;
-  let startX = 0, startScroll = 0, pointerId = null;
-
-  nav.addEventListener("pointerdown", (e)=>{
-    if(e.pointerType === "touch") return;
-    tracking = true; dragging = false; moved = false;
-    startX = e.clientX;
-    startScroll = nav.scrollLeft;
-    pointerId = e.pointerId;
+  categories.forEach((cat, idx)=>{
+    const id = "cat-" + slug(cat.nombre);
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "cat-card-btn";
+    btn.innerHTML =
+      '<span class="cat-card-icon"></span>' +
+      '<span class="cat-card-name"></span>';
+    btn.querySelector(".cat-card-icon").textContent = catIcon(cat.nombre);
+    btn.querySelector(".cat-card-name").textContent = cat.nombre;
+    if(idx >= CAT_GRID_VISIBLE) btn.hidden = true;
+    btn.addEventListener("click", ()=>{
+      openCategory(id, true, true);
+    });
+    catGrid.appendChild(btn);
   });
-  nav.addEventListener("pointermove", (e)=>{
-    if(!tracking) return;
-    const dx = e.clientX - startX;
-    if(!dragging && Math.abs(dx) > 5){
-      dragging = true; moved = true;
-      nav.setPointerCapture(pointerId);
-    }
-    if(dragging) nav.scrollLeft = startScroll - dx;
-  });
-  function endDrag(){
-    if(!tracking) return;
-    tracking = false; dragging = false;
-    if(moved){
-      const clickBlocker = (ev)=>{ ev.stopPropagation(); ev.preventDefault(); };
-      nav.addEventListener("click", clickBlocker, { capture:true, once:true });
-    }
+
+  if(categories.length > CAT_GRID_VISIBLE){
+    catGridToggle.hidden = false;
+    catGridToggle.classList.remove("open");
+    catGridToggle.querySelector(".label").textContent = "Más categorías";
+    catGridToggle.onclick = ()=>{
+      catGridExpanded = !catGridExpanded;
+      [...catGrid.children].slice(CAT_GRID_VISIBLE).forEach(btn=>{ btn.hidden = !catGridExpanded; });
+      catGridToggle.classList.toggle("open", catGridExpanded);
+      catGridToggle.querySelector(".label").textContent = catGridExpanded ? "Ver menos" : "Más categorías";
+      requestAnimationFrame(syncStickyOffsets);
+    };
+  } else {
+    catGridToggle.hidden = true;
+    catGridToggle.onclick = null;
   }
-  nav.addEventListener("pointerup", endDrag);
-  nav.addEventListener("pointercancel", endDrag);
-  nav.addEventListener("pointerleave", ()=>{ if(!dragging) tracking = false; });
-})();
+}
+
+function openCategory(id, scrollTo, exclusive){
+  const section = sectionByCat[id];
+  if(!section) return;
+  if(exclusive){
+    // Al pasar a otra categoría, plegamos la que estaba abierta —
+    // solo una categoría desplegada a la vez (mientras no se busca).
+    Object.keys(sectionByCat).forEach(otherId=>{
+      if(otherId !== id) closeCategory(otherId);
+    });
+  }
+  section.classList.add("open");
+  section.querySelector(".cat-head").setAttribute("aria-expanded", "true");
+  section.querySelector(".cat-card").hidden = false;
+  if(scrollTo){
+    requestAnimationFrame(()=>{
+      section.scrollIntoView({ block: "start", behavior: "smooth" });
+    });
+  }
+}
+function closeCategory(id){
+  const section = sectionByCat[id];
+  if(!section) return;
+  section.classList.remove("open");
+  section.querySelector(".cat-head").setAttribute("aria-expanded", "false");
+  section.querySelector(".cat-card").hidden = true;
+}
+function toggleCategory(id){
+  const section = sectionByCat[id];
+  if(!section) return;
+  if(section.classList.contains("open")) closeCategory(id);
+  else openCategory(id, false, true);
+}
 
 function setBanner(mode){
   if(mode === "error"){
@@ -3994,37 +4043,36 @@ function setBanner(mode){
 }
 
 function renderCategories(categories){
-  nav.innerHTML = "";
+  catGrid.innerHTML = "";
   catsEl.innerHTML = "";
-  Object.keys(chipByCat).forEach(k=> delete chipByCat[k]);
   Object.keys(sectionByCat).forEach(k=> delete sectionByCat[k]);
 
   categories.forEach(cat=>{
     const id = "cat-" + slug(cat.nombre);
-
-    const chip = document.createElement("button");
-    chip.type = "button";
-    chip.textContent = cat.nombre + " (" + cat.productos.length + ")";
-    chip.addEventListener("click", ()=>{
-      document.getElementById(id).scrollIntoView({block:"start"});
-    });
-    nav.appendChild(chip);
-    chipByCat[id] = chip;
 
     const section = document.createElement("section");
     section.className = "category";
     section.id = id;
     section.dataset.name = cat.nombre;
 
-    const head = document.createElement("div");
+    const head = document.createElement("button");
+    head.type = "button";
     head.className = "cat-head";
-    head.innerHTML = '<h2 class="cat-title"></h2><span class="cat-count"></span>';
+    head.setAttribute("aria-expanded", "false");
+    head.innerHTML =
+      '<span class="cat-head-text">' +
+        '<h2 class="cat-title"></h2>' +
+        '<span class="cat-count"></span>' +
+      '</span>' +
+      '<span class="cat-chevron">⌄</span>';
     head.querySelector(".cat-title").textContent = cat.nombre;
     head.querySelector(".cat-count").textContent = cat.productos.length + (cat.productos.length===1 ? " producto" : " productos");
+    head.addEventListener("click", ()=> toggleCategory(id));
     section.appendChild(head);
 
     const card = document.createElement("div");
     card.className = "cat-card";
+    card.hidden = true; // plegado por defecto
     const ul = document.createElement("ul");
     ul.className = "items";
     cat.productos.forEach((p, idx)=>{
@@ -4068,28 +4116,12 @@ function renderCategories(categories){
     sectionByCat[id] = section;
   });
 
+  buildCatGrid(categories);
+
   searchInput.value = "";
   noResults.hidden = true;
-  navRow.hidden = false;
-  nav.scrollLeft = 0;
-  updateNavArrows();
+  document.getElementById("catGridWrap").hidden = false;
   syncStickyOffsets();
-
-  if(observer) observer.disconnect();
-  if("IntersectionObserver" in window){
-    observer = new IntersectionObserver((entries)=>{
-      entries.forEach(entry=>{
-        const chip = chipByCat[entry.target.id];
-        if(!chip) return;
-        if(entry.isIntersecting){
-          Object.values(chipByCat).forEach(c=>c.classList.remove("active"));
-          chip.classList.add("active");
-          chip.scrollIntoView({inline:"center", block:"nearest"});
-        }
-      });
-    }, { rootMargin: "-" + (nav.getBoundingClientRect().bottom + 8) + "px 0px -60% 0px", threshold: 0 });
-    Object.values(sectionByCat).forEach(section=> observer.observe(section));
-  }
 }
 
 /* ---------------- buscador ---------------- */
@@ -4097,7 +4129,7 @@ searchInput.addEventListener("input", ()=>{
   const q = norm(searchInput.value.trim());
   let anyVisible = false;
 
-  Object.values(sectionByCat).forEach(section=>{
+  Object.entries(sectionByCat).forEach(([id, section])=>{
     const items = section.querySelectorAll(".item");
     let visibleInCat = 0;
     items.forEach(li=>{
@@ -4106,11 +4138,14 @@ searchInput.addEventListener("input", ()=>{
       if(match) visibleInCat++;
     });
     section.hidden = visibleInCat === 0;
-    if(visibleInCat > 0) anyVisible = true;
+    if(visibleInCat > 0){
+      anyVisible = true;
+      if(q) openCategory(id, false, false); else closeCategory(id);
+    }
   });
 
   noResults.hidden = anyVisible || !q;
-  navRow.hidden = !!q;
+  document.getElementById("catGridWrap").hidden = !!q;
 });
 
 /* ---------------- lectura en vivo desde Google Sheets ---------------- */
@@ -4184,3 +4219,5 @@ async function loadLiveData(){
 
 loadLiveData();
 </script>
+</body>
+</html>
