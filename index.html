@@ -525,6 +525,42 @@
     color:var(--ink-faint);
     line-height:1.3;
   }
+  .cart-payment{
+    margin:0 0 12px;
+    padding:10px 12px;
+    border:1px solid var(--line);
+    border-radius:12px;
+    background:var(--surface-alt);
+  }
+  .cart-payment-label{
+    margin:0 0 6px;
+    font-size:.8rem;
+    font-weight:700;
+    color:var(--ink);
+  }
+  .cart-payment-option{
+    display:flex;
+    align-items:flex-start;
+    gap:8px;
+    padding:6px 0;
+    font-size:.85rem;
+    color:var(--ink);
+    cursor:pointer;
+  }
+  .cart-payment-option input{
+    margin-top:3px;
+    flex:none;
+    accent-color:var(--accent);
+    width:16px;
+    height:16px;
+  }
+  .cart-payment-option-text{ display:flex; flex-direction:column; gap:1px; }
+  .cart-payment-hint{
+    font-size:.76rem;
+    color:var(--ink-soft);
+    font-weight:400;
+    line-height:1.3;
+  }
   .cart-send{
     display:flex;
     align-items:center;
@@ -598,6 +634,20 @@
     <div class="cart-drawer-foot">
       <p class="cart-total" id="cartTotal"></p>
       <p class="cart-note" id="cartNote"></p>
+      <div class="cart-payment" id="cartPayment">
+        <p class="cart-payment-label">Forma de pago</p>
+        <label class="cart-payment-option">
+          <input type="radio" name="paymentMethod" value="transferencia" id="payTransferencia" checked>
+          <span class="cart-payment-option-text">Transferencia</span>
+        </label>
+        <label class="cart-payment-option">
+          <input type="radio" name="paymentMethod" value="efectivo" id="payEfectivo">
+          <span class="cart-payment-option-text">
+            Efectivo
+            <span class="cart-payment-hint">10% de descuento abonando por este medio</span>
+          </span>
+        </label>
+      </div>
       <a class="cart-send" id="cartSend" href="#" target="_blank" rel="noopener">Enviar pedido por WhatsApp</a>
     </div>
   </div>
@@ -3778,6 +3828,7 @@ const cartItemsEl = document.getElementById("cartItems");
 const cartEmptyMsg = document.getElementById("cartEmptyMsg");
 const cartTotalEl = document.getElementById("cartTotal");
 const cartNoteEl = document.getElementById("cartNote");
+const cartPaymentEl = document.getElementById("cartPayment");
 const cartSendBtn = document.getElementById("cartSend");
 const cartClose = document.getElementById("cartClose");
 const cartBadge = document.getElementById("cartBadge");
@@ -3858,6 +3909,11 @@ function cartCount(){
   return Object.keys(cart).length;
 }
 
+function getPaymentMethod(){
+  const checked = document.querySelector('input[name="paymentMethod"]:checked');
+  return checked ? checked.value : "transferencia";
+}
+
 function buildWhatsAppMessage(){
   const lines = ["¡Hola! Quiero hacer este pedido:", ""];
   let total = 0;
@@ -3877,6 +3933,9 @@ function buildWhatsAppMessage(){
   if(total > 0){
     lines.push("Total estimado: " + formatMoney(total) + (hasConsultar ? " + productos a consultar" : ""));
   }
+  const payment = getPaymentMethod();
+  lines.push("Forma de pago: " + (payment === "efectivo" ? "Efectivo (10% de descuento)" : "Transferencia"));
+  lines.push("");
   lines.push("Quedo atento/a, gracias!");
   return lines.join("\n");
 }
@@ -3921,6 +3980,7 @@ function updateCartUI(){
   cartNoteEl.textContent = hasConsultar
     ? "Hay productos con precio a consultar — se incluyen en el mensaje, pero no en el total."
     : "";
+  cartPaymentEl.hidden = entries.length === 0;
 
   if(entries.length > 0){
     cartSendBtn.href = BUSINESS.whatsapp + "?text=" + encodeURIComponent(buildWhatsAppMessage());
@@ -3951,6 +4011,9 @@ cartClose.addEventListener("click", closeCart);
 cartOverlay.addEventListener("click", closeCart);
 cartSendBtn.addEventListener("click", (e)=>{
   if(cartCount() === 0) e.preventDefault();
+});
+document.querySelectorAll('input[name="paymentMethod"]').forEach(input=>{
+  input.addEventListener("change", updateCartUI);
 });
 
 document.getElementById("contactBtn").addEventListener("click", ()=>{
